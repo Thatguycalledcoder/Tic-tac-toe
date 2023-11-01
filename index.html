@@ -4,9 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-tac-toe</title>
-    <script src="test.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="index.js" defer></script>
 </head>
 <body>
-    
+    <header>
+        <h1>Tic-Tac-Toe</h1>
+    </header>
+    <main>
+        <!-- Section for selecting game mode and other information -->
+        <section>
+            <div id="mode-selection">
+                <!-- Select between two players or vs CPU -->
+                <button type="button" id="p2">VS P</button>
+                <button type="button" id="cpu">VS CPU</button>
+            </div>
+            <div>
+                <!-- Input names of players 
+                if one player only one input
+                if two players display an additional input
+                -->
+                <label for="player1-name">Player 1 Name:</label>
+                <input type="text" id="player1-name" name="player1-name">
+                <div>
+                    <label for="player2-name">Player 2 Name:</label>
+                    <input type="text" id="player2-name" name="player2-name">
+                </div>
+            </div>
+             <!-- Start game button -->
+            <button type="button" id="start">Start game</button>    
+        </section>
+        <!-- Section for Tic-Tac-Toe board -->
+        <section>
+            <!-- text display for whose turn to make a move -->
+            <p id="game-message"></p>
+            <!-- Tic-Tac-Toe board -->
+            <div id="game-board">
+                <button type="button" data-index="0"></button>
+                <button type="button" data-index="1"></button>
+                <button type="button" data-index="2"></button>
+                <button type="button" data-index="3"></button>
+                <button type="button" data-index="4"></button>
+                <button type="button" data-index="5"></button>
+                <button type="button" data-index="6"></button>
+                <button type="button" data-index="7"></button>
+                <button type="button" data-index="8"></button>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

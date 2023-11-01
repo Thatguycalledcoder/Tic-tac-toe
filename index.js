@@ -131,4 +131,4 @@ function startGame() {
     console.log(message);
 }
 
-startGame();
+// startGame();
