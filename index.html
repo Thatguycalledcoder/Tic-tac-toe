@@ -13,24 +13,34 @@
     </header>
     <main>
         <!-- Section for selecting game mode and other information -->
-        <section id="user-info">
+        <section>
             <div id="mode-selection">
                 <h2>Mode Selection</h2>
                 <!-- Select between two players or vs CPU -->
                 <button type="button" id="p2">VS Player</button>
                 <button type="button" id="cpu">VS CPU</button>
             </div>
-            <div>
-                <h2>Enter your username(s):</h2>
+            <div id="user-info">
+                <h2>User information:</h2>
                 <!-- Input names of players 
                 if one player only one input
                 if two players display an additional input
                 -->
                 <label for="player1-name">Player 1 Name:</label>
                 <input type="text" id="player1-name" name="player1-name">
+                <div id="marker-selection">
+                    <p>Select your marker: (Player 1)</p>
+                    <button type="button" id="X">X</button>
+                    <button type="button" id="O">O</button>
+                </div>
                 <div id="player2">
                     <label for="player2-name">Player 2 Name:</label>
                     <input type="text" id="player2-name" name="player2-name">
+                    <div id="marker2">
+                        <p>Select your marker: (Player 2)</p>
+                        <button type="button" id="X2" disabled>X</button>
+                        <button type="button" id="O2" disabled>O</button>
+                    </div>
                 </div>
             </div>
              <!-- Start game button -->
@@ -44,15 +54,15 @@
             </p>
             <!-- Tic-Tac-Toe board -->
             <div id="game-board">
-                <button type="button" data-index="0"></button>
-                <button type="button" data-index="1"></button>
-                <button type="button" data-index="2"></button>
-                <button type="button" data-index="3"></button>
-                <button type="button" data-index="4"></button>
-                <button type="button" data-index="5"></button>
-                <button type="button" data-index="6"></button>
-                <button type="button" data-index="7"></button>
-                <button type="button" data-index="8"></button>
+                <button type="button" id="pos" data-index="0"></button>
+                <button type="button" id="pos" data-index="1"></button>
+                <button type="button" id="pos" data-index="2"></button>
+                <button type="button" id="pos" data-index="3"></button>
+                <button type="button" id="pos" data-index="4"></button>
+                <button type="button" id="pos" data-index="5"></button>
+                <button type="button" id="pos" data-index="6"></button>
+                <button type="button" id="pos" data-index="7"></button>
+                <button type="button" id="pos" data-index="8"></button>
             </div>
         </section>
     </main>

@@ -1,3 +1,136 @@
+// Targetting the elements
+const twoPlayerButton = document.querySelector("#p2");
+const vsCPUButton = document.querySelector("#cpu");
+const player1Name = document.querySelector("#player1-name");
+const player2Info = document.querySelector("#player2");
+const player2Name = document.querySelector("#player2-name");
+const startButton = document.querySelector("#start");
+const message = document.querySelector("#game-message");
+const gridBoard = document.querySelector("#game-board");
+const positions = document.querySelectorAll("#pos");
+const markerX1 = document.querySelector("#X");
+const markerX2 = document.querySelector("#X2");
+const markerO1 = document.querySelector("#O");
+const markerO2 = document.querySelector("#O2");
+let markers = [];
+let markerSelection = false;
+
+for (const marker of [markerX2, markerO2]) {
+    marker.style["opacity"] = 0.6;
+}
+
+startButton.setAttribute("disabled", true);
+
+const selectGameMode = function(e) {
+    if (e.target.id === "p2") {
+        vsCPUButton.style["opacity"] = 0.6;
+        twoPlayerButton.style["opacity"] = 1;
+
+        if(getComputedStyle(player2Info).visibility == "hidden") {
+            player2Info.style["visibility"] = "visible";
+            player2Info.style["opacity"] = 1;
+        }   
+        if ((player2Name.value !== "" && player2Name.value !== null) && markerSelection) {
+            startButton.removeAttribute("disabled");
+        }
+        else {
+            startButton.setAttribute("disabled", true);
+        }
+    }
+    else if(e.target.id === "cpu") {
+        twoPlayerButton.style["opacity"] = 0.6;
+        vsCPUButton.style["opacity"] = 1;
+
+        if(getComputedStyle(player2Info).visibility == "visible") {
+            player2Info.style["visibility"] = "hidden";
+            player2Info.style["opacity"] = 0;
+        }
+        if ((player1Name.value !== "" && player1Name.value !== null) && markerSelection) {
+            startButton.removeAttribute("disabled");
+        }
+        else {
+            startButton.setAttribute("disabled", true);
+        }
+    } 
+}
+
+const selectMarker = function(e) {
+    e.stopPropagation();
+    markerSelection = true;
+    if (e.target.id === "X") {
+        markerX1.style["opacity"] = 1;
+        markerO2.style["opacity"] = 1;
+
+        markerO1.style["opacity"] = 0.6;
+        markerX2.style["opacity"] = 0.6;
+        markers = ["X", "O"];
+    }
+    else if(e.target.id === "O") {
+        markerO1.style["opacity"] = 1;
+        markerX2.style["opacity"] = 1;
+
+        markerX1.style["opacity"] = 0.6;
+        markerO2.style["opacity"] = 0.6;
+        markers = ["O", "X"];
+    }
+
+    if(getComputedStyle(player2Info).visibility == "hidden") {
+        if ((player1Name.value !== "" && player1Name.value !== null) && markerSelection) {
+            startButton.removeAttribute("disabled");
+        }
+        else {
+            startButton.setAttribute("disabled", true);
+        }
+    }
+    else if(getComputedStyle(player2Info).visibility == "visible") {
+        if ((player2Name.value !== "" && player2Name.value !== null) && markerSelection) {
+            if ((player1Name.value !== "" && player1Name.value !== null) && markerSelection) {
+                startButton.removeAttribute("disabled");
+            }
+            else {
+                startButton.setAttribute("disabled", true);
+            }
+        }
+    } 
+}
+
+const enableStart = function(e) {
+    e.stopPropagation();
+    if (player1Name.value !== null && player1Name.value !== "") {
+        if (getComputedStyle(player2Info).visibility == "hidden") {
+            startButton.removeAttribute("disabled");
+        }
+        else if (getComputedStyle(player2Info).visibility == "visible" ) {
+            if (player2Name.value !== "" && player2Name.value !== null) {
+                startButton.removeAttribute("disabled");
+            }
+            else {
+                startButton.setAttribute("disabled", true);
+            }
+        }
+    }
+    else if (player1Name.value == null || player1Name.value == "") {
+        startButton.setAttribute("disabled", true);
+    }
+}
+
+const start = function (e) {
+    e.stopPropagation();
+    startGame(message, positions, markers[0], markers[1]);
+}
+
+for (const button of [twoPlayerButton, vsCPUButton]) {
+    button.addEventListener("click", selectGameMode, false)
+}
+for (const input of [player1Name, player2Name]) {
+    input.addEventListener("input", enableStart);
+}
+for (const marker of [markerX1, markerO1]) {
+    marker.addEventListener("click", selectMarker);
+}
+
+startButton.addEventListener("click", start);
+
 // Creating the objects
 // Gameboard - module
 const game = function () {
@@ -11,8 +144,18 @@ const game = function () {
             return board[index];
         }
     
-        const addMarker = function(index, marker) {
+        const addMarker = function(index, marker, positions) {
             board.splice(index, 1, marker);
+            positions[index].innerText = marker;
+            if (marker == "X") {
+                positions[index].style["color"] = "blue";
+            }
+            else {
+                positions[index].style["color"] = "orange";
+            }
+            // let tem = positions[index].cloneNode();
+            // gridBoard.insertBefore(tem, positions[index]);
+            // gridBoard.removeChild(positions[index]);
         }
     
         const display = function() {
@@ -71,137 +214,88 @@ function createPlayer(name, marker) {
 }
 
 // player move
-function playerMove(board, player) {
+function playerMove(board, player, positions) {
     let index = parseInt(prompt("Choose position to play[0-8]"));
     while (board.getPosition(index) === "O" || board.getPosition(index) === "X") {
         index = parseInt(prompt("Incorrect position. Choose position to play"));
     }
-    board.addMarker(index, player.marker);
+    board.addMarker(index, player.marker, positions);
 }
 
 // Game flow - factory function
-function startGame() {
+function startGame(message, positions, player1Marker, player2Marker) {
 
     const gameBoard = game();
 
     // Create first player
-    const player1Name = prompt("Enter your name:")
-    let player1Marker = prompt("Choose your marker (O or X):");
-    console.log(player1Marker);
-    while ((player1Marker !== "O") && (player1Marker !== "X")) {
-        player1Marker = prompt("Marker must either be 'X' or 'O'. Choose your marker (O or X):");
-        console.log(player1Marker);
-    }
-    const player1 = createPlayer(player1Name, player1Marker);
+    const player1 = createPlayer(player1Name.value, player1Marker);
 
     // Create second player
-    const player2Name = prompt("Enter 2 your name:");
-    const player2Marker = player1.marker === "X" ? "O" : "X";
-    console.log(player2Marker);
-    const player2 = createPlayer(player2Name, player2Marker);
+    const player2 = createPlayer(player2Name.value, player2Marker);
 
-    console.log(`Welcome to the game ${player1.name}. Your marker is ${player1.marker}`);
-    console.log(`Welcome to the game ${player2.name}. Your marker is ${player2.marker}`);
-
-    gameBoard.display();
-
+    message.textContent = `Welcome to the game ${player1.name}. Your marker is ${player1.marker}\nWelcome to the game ${player2.name}. Your marker is ${player2.marker}`;
+    
     let isOver = false;
-    let message = "";
     let playerTurn = 1;
-    while (!isOver) {
+    
+    function playerMove2(e) {
+        e.stopPropagation();
+        let player = null;
         if (playerTurn === 1) {
-            playerMove(gameBoard, player1);
-            gameBoard.display();
-            let check = gameBoard.checkBoard(player1);
-            message = check[1]
-            isOver = check[0];
-            playerTurn = 2;
+           player = player1;
+           playerTurn = 2;
         }
         else {
-            playerMove(gameBoard, player2);
-            gameBoard.display();
-            let check = gameBoard.checkBoard(player2);
-            message = check[1]
-            isOver = check[0];
+            player = player2;
             playerTurn = 1;
         }
-        
-        
-    }
-    console.log(message);
-}
 
-// Targetting the elements
-const userInfo = document.querySelector("#user-info");
-const twoPlayerButton = document.querySelector("#p2");
-const vsCPUButton = document.querySelector("#cpu");
-const player1Name = document.querySelector("#player1-name");
-const player2Info = document.querySelector("#player2");
-const player2Name = document.querySelector("#player2-name");
-const startButton = document.querySelector("#start");
-const message = document.querySelector("#game-message");
-const gridpositions = document.querySelector("#game-board");
+        let index = e.target.dataset.index;
+        gameBoard.addMarker(index, player.marker, positions);
+        let check = gameBoard.checkBoard(player);
+        isOver =  check[0];
 
-startButton.setAttribute("disabled", true);
-
-const selectGameMode = function(e) {
-    if (e.target.id === "p2") {
-        vsCPUButton.style["opacity"] = 0.6;
-        twoPlayerButton.style["opacity"] = 1;
-
-        if(getComputedStyle(player2Info).visibility == "hidden") {
-            player2Info.style["visibility"] = "visible";
-            player2Info.style["opacity"] = 1;
-        }   
-        if (player2Name.value !== "" && player2Name.value !== null) {
-            startButton.removeAttribute("disabled");
+        if (isOver) {
+            message.textContent = check[1];
+            
+            for (const position of positions) {
+                position.setAttribute("disabled", true);
+            }
         }
         else {
-            startButton.setAttribute("disabled", true);
-        }
-    }
-    else if(e.target.id === "cpu") {
-        twoPlayerButton.style["opacity"] = 0.6;
-        vsCPUButton.style["opacity"] = 1;
-
-        if(getComputedStyle(player2Info).visibility == "visible") {
-            player2Info.style["visibility"] = "hidden";
-            player2Info.style["opacity"] = 0;
-        }
-    }
-    
-}
-
-const enableStart = function(e) {
-    e.stopPropagation();
-    if (player1Name.value !== null && player1Name.value !== "") {
-        if (getComputedStyle(player2Info).visibility == "hidden") {
-            startButton.removeAttribute("disabled");
-        }
-        else if (getComputedStyle(player2Info).visibility == "visible" ) {
-            if (player2Name.value !== "" && player2Name.value !== null) {
-                startButton.removeAttribute("disabled");
+            if (playerTurn === 1) {
+                message.textContent = `${player1.name}'s turn to make a move.`;
             }
             else {
-                startButton.setAttribute("disabled", true);
+                message.textContent = `${player2.name}'s turn to make a move.`;
             }
         }
     }
-    else if (player1Name.value == null || player1Name.value == "") {
-        startButton.setAttribute("disabled", true);
+
+    for (const position of positions) {
+        position.addEventListener("click", playerMove2);
     }
+
+
+    // while (!isOver) {
+    //     if (playerTurn === 1) {
+    //         playerMove(gameBoard, player1, positions);
+    //         gameBoard.display();
+    //         let check = gameBoard.checkBoard(player1);
+    //         message.textContent = check[1]
+    //         isOver = check[0];
+    //         playerTurn = 2;
+    //     }
+    //     else {
+    //         playerMove(gameBoard, player2, positions);
+    //         gameBoard.display();
+    //         let check = gameBoard.checkBoard(player2);
+    //         message.textContent = check[1]
+    //         isOver = check[0];
+    //         playerTurn = 1;
+    //     }
+        
+        
+    // }
+    // console.log(message.textContent);
 }
-
-const start = function (e) {
-    e.stopPropagation();
-
-}
-
-for (const button of [twoPlayerButton, vsCPUButton]) {
-    button.addEventListener("click", selectGameMode, false)
-}
-
-for (const input of [player1Name, player2Name]) {
-    input.addEventListener("input", enableStart);
-}
-

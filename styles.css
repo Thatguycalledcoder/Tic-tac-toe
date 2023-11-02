@@ -22,8 +22,8 @@ main {
 
 main > section:first-child {
     display: grid;
-    grid-template-rows: 2fr 3fr 1fr;
-    gap: 4rem;
+    grid-template-rows: 1fr 3fr 1fr;
+    gap: 1rem;
 }
 
 #mode-selection {
@@ -35,7 +35,13 @@ main > section:first-child {
     grid-column: 1 / 3;
 }
 
-#mode-selection button {
+#marker-selection {
+    margin-block: 1rem 1.5rem;
+}
+
+#mode-selection button,
+#marker-selection button,
+#marker2 button {
     background-color: transparent;
     border: 3px solid rgba(255, 255, 255, 1);
     border-radius: 1rem;
@@ -47,8 +53,32 @@ main > section:first-child {
     max-height: 3rem;
 }
 
-#mode-selection button:hover {
+#mode-selection button:hover,
+#marker-selection button:hover {
     transform: scale(1.1);
+}
+
+#marker-selection p {
+    margin-block: 0.5rem;
+}
+
+#marker-selection button,
+#marker2 button {
+    width: 15%;
+    height: 15%;
+    font-size: 1.5rem;
+}
+
+#marker2 button {
+    cursor: default;
+}
+
+#marker-selection button:first-of-type, #X2 {
+    color: blue;
+}
+
+#marker-selection button:last-of-type, #O2 {
+    color: orange;
 }
 
 #player2 {
@@ -63,11 +93,10 @@ label {
 #player1-name, #player2-name {
     width: 75%;
     margin-top: 0.5rem;
-    margin-bottom: 2rem;
     padding: 0.5rem;
 }
 
-label, #player1-name, #player2-name {
+#user-info {
     margin-left: 10%;
 }
 
@@ -95,18 +124,19 @@ label, #player1-name, #player2-name {
     font-size: 1.5rem;
     margin-inline: 10% 30%;
     height: 4rem;
+    text-align: center;
 }
 
 #game-board {
-    width: 40%;
+    width: 45%;
     display: grid;
     background-color: white;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 40% 40% 40%;
     margin-left: 20%;
     margin-top: 5%;
 }
 #game-board button {
-    height: 8rem;
+    height: 9rem;
     background-color: white;
     font-size: 6rem;
 }
