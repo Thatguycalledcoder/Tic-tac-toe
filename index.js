@@ -12,6 +12,8 @@ const markerX1 = document.querySelector("#X");
 const markerX2 = document.querySelector("#X2");
 const markerO1 = document.querySelector("#O");
 const markerO2 = document.querySelector("#O2");
+const restartButton = document.querySelector("#restart");
+
 let markers = [];
 let markerSelection = false;
 
@@ -114,8 +116,20 @@ const enableStart = function(e) {
     }
 }
 
+const restart = function(e) {
+    e.stopPropagation();
+    message.textContent = "";
+    for (const position of positions) {
+        position.removeAttribute("disabled");
+        position.innerText = "";
+    }
+    restartButton.setAttribute("hidden", true);
+    startGame(message, positions, markers[0], markers[1]);
+}
+
 const start = function (e) {
     e.stopPropagation();
+    startButton.setAttribute("disabled", true);
     startGame(message, positions, markers[0], markers[1]);
 }
 
@@ -130,7 +144,7 @@ for (const marker of [markerX1, markerO1]) {
 }
 
 startButton.addEventListener("click", start);
-
+restartButton.addEventListener("click", restart);
 // Creating the objects
 // Gameboard - module
 const game = function () {
@@ -153,21 +167,6 @@ const game = function () {
             else {
                 positions[index].style["color"] = "orange";
             }
-            // let tem = positions[index].cloneNode();
-            // gridBoard.insertBefore(tem, positions[index]);
-            // gridBoard.removeChild(positions[index]);
-        }
-    
-        const display = function() {
-            console.log(
-                `
-                 ${board[0]} || ${board[1]} || ${board[2]}
-                ---||---||---
-                 ${board[3]} || ${board[4]} || ${board[5]}
-                ---||---||---
-                 ${board[6]} || ${board[7]} || ${board[8]}
-                `
-            );
         }
     
         const checkBoard = function(player) {
@@ -204,7 +203,7 @@ const game = function () {
             }
         }
 
-        return { getPosition, addMarker, display, checkBoard }
+        return { getPosition, addMarker, checkBoard }
     })();
 }
 
@@ -261,6 +260,7 @@ function startGame(message, positions, player1Marker, player2Marker) {
             for (const position of positions) {
                 position.setAttribute("disabled", true);
             }
+            restartButton.removeAttribute("hidden");
         }
         else {
             if (playerTurn === 1) {
@@ -276,26 +276,5 @@ function startGame(message, positions, player1Marker, player2Marker) {
         position.addEventListener("click", playerMove2);
     }
 
-
-    // while (!isOver) {
-    //     if (playerTurn === 1) {
-    //         playerMove(gameBoard, player1, positions);
-    //         gameBoard.display();
-    //         let check = gameBoard.checkBoard(player1);
-    //         message.textContent = check[1]
-    //         isOver = check[0];
-    //         playerTurn = 2;
-    //     }
-    //     else {
-    //         playerMove(gameBoard, player2, positions);
-    //         gameBoard.display();
-    //         let check = gameBoard.checkBoard(player2);
-    //         message.textContent = check[1]
-    //         isOver = check[0];
-    //         playerTurn = 1;
-    //     }
-        
-        
-    // }
-    // console.log(message.textContent);
+    message.textContent = `${player1.name}'s turn to make a move.`;
 }

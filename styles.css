@@ -12,6 +12,7 @@ h1,h2 {
 
 body {
     background-color: rgba(0,0,0, 0.9);
+    overflow-y: hidden;
 }
 
 main {
@@ -51,6 +52,20 @@ main > section:first-child {
     cursor: pointer;
     min-height: 2.5rem;
     max-height: 3rem;
+}
+
+#restart {
+    text-align: center;
+    margin-inline: 35%;
+    padding: 1rem;
+    font-size: 1rem;
+    width: 20%;
+    font-weight: bold;
+    color: black;
+    background-color: rgb(225, 220, 220);
+}
+#restart:hover {
+    background-color: lightgray;
 }
 
 #mode-selection button:hover,
@@ -123,7 +138,7 @@ label {
     font-weight: bold;
     font-size: 1.5rem;
     margin-inline: 10% 30%;
-    height: 4rem;
+    height: 3rem;
     text-align: center;
 }
 
@@ -134,6 +149,7 @@ label {
     grid-template-columns: 40% 40% 40%;
     margin-left: 20%;
     margin-top: 5%;
+    margin-bottom: 2rem;
 }
 #game-board button {
     height: 9rem;
