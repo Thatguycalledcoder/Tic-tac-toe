@@ -131,4 +131,77 @@ function startGame() {
     console.log(message);
 }
 
-// startGame();
+// Targetting the elements
+const userInfo = document.querySelector("#user-info");
+const twoPlayerButton = document.querySelector("#p2");
+const vsCPUButton = document.querySelector("#cpu");
+const player1Name = document.querySelector("#player1-name");
+const player2Info = document.querySelector("#player2");
+const player2Name = document.querySelector("#player2-name");
+const startButton = document.querySelector("#start");
+const message = document.querySelector("#game-message");
+const gridpositions = document.querySelector("#game-board");
+
+startButton.setAttribute("disabled", true);
+
+const selectGameMode = function(e) {
+    if (e.target.id === "p2") {
+        vsCPUButton.style["opacity"] = 0.6;
+        twoPlayerButton.style["opacity"] = 1;
+
+        if(getComputedStyle(player2Info).visibility == "hidden") {
+            player2Info.style["visibility"] = "visible";
+            player2Info.style["opacity"] = 1;
+        }   
+        if (player2Name.value !== "" && player2Name.value !== null) {
+            startButton.removeAttribute("disabled");
+        }
+        else {
+            startButton.setAttribute("disabled", true);
+        }
+    }
+    else if(e.target.id === "cpu") {
+        twoPlayerButton.style["opacity"] = 0.6;
+        vsCPUButton.style["opacity"] = 1;
+
+        if(getComputedStyle(player2Info).visibility == "visible") {
+            player2Info.style["visibility"] = "hidden";
+            player2Info.style["opacity"] = 0;
+        }
+    }
+    
+}
+
+const enableStart = function(e) {
+    e.stopPropagation();
+    if (player1Name.value !== null && player1Name.value !== "") {
+        if (getComputedStyle(player2Info).visibility == "hidden") {
+            startButton.removeAttribute("disabled");
+        }
+        else if (getComputedStyle(player2Info).visibility == "visible" ) {
+            if (player2Name.value !== "" && player2Name.value !== null) {
+                startButton.removeAttribute("disabled");
+            }
+            else {
+                startButton.setAttribute("disabled", true);
+            }
+        }
+    }
+    else if (player1Name.value == null || player1Name.value == "") {
+        startButton.setAttribute("disabled", true);
+    }
+}
+
+const start = function (e) {
+    e.stopPropagation();
+
+}
+
+for (const button of [twoPlayerButton, vsCPUButton]) {
+    button.addEventListener("click", selectGameMode, false)
+}
+
+for (const input of [player1Name, player2Name]) {
+    input.addEventListener("input", enableStart);
+}
+

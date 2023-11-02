@@ -51,9 +51,10 @@ main > section:first-child {
     transform: scale(1.1);
 }
 
-#p2 {}
-
-#cpu {}
+#player2 {
+    transition: all 0.3s ease-in-out;
+    height: 40%;
+}
 
 label {
     display: block;
@@ -64,6 +65,10 @@ label {
     margin-top: 0.5rem;
     margin-bottom: 2rem;
     padding: 0.5rem;
+}
+
+label, #player1-name, #player2-name {
+    margin-left: 10%;
 }
 
 #start {
@@ -78,6 +83,11 @@ label {
 
 #start:hover {
     background-color: green;
+}
+
+#start:disabled {
+    background-color: green;
+    cursor: default;
 }
 
 #game-message {
@@ -102,6 +112,8 @@ label {
 }
 #game-board button:hover {
     background-color: rgb(230, 227, 227);
-    color: black;
-    
+    color: black;   
+}
+.hidden {
+    display: hidden;
 }
