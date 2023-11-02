@@ -145,6 +145,7 @@ for (const marker of [markerX1, markerO1]) {
 
 startButton.addEventListener("click", start);
 restartButton.addEventListener("click", restart);
+
 // Creating the objects
 // Gameboard - module
 const game = function () {
@@ -240,34 +241,38 @@ function startGame(message, positions, player1Marker, player2Marker) {
     function playerMove2(e) {
         e.stopPropagation();
         let player = null;
-        if (playerTurn === 1) {
-           player = player1;
-           playerTurn = 2;
-        }
-        else {
-            player = player2;
-            playerTurn = 1;
-        }
-
         let index = e.target.dataset.index;
-        gameBoard.addMarker(index, player.marker, positions);
-        let check = gameBoard.checkBoard(player);
-        isOver =  check[0];
-
-        if (isOver) {
-            message.textContent = check[1];
-            
-            for (const position of positions) {
-                position.setAttribute("disabled", true);
-            }
-            restartButton.removeAttribute("hidden");
-        }
+        if (gameBoard.getPosition(index) === "O" || gameBoard.getPosition(index) === "X") {
+            message.textContent = "Position filled. Choose another position to play";
+        }        
         else {
             if (playerTurn === 1) {
-                message.textContent = `${player1.name}'s turn to make a move.`;
+                player = player1;
+                playerTurn = 2;
+             }
+             else {
+                 player = player2;
+                 playerTurn = 1;
+             }
+            gameBoard.addMarker(index, player.marker, positions);
+            let check = gameBoard.checkBoard(player);
+            isOver =  check[0];
+
+            if (isOver) {
+                message.textContent = check[1];
+                
+                for (const position of positions) {
+                    position.setAttribute("disabled", true);
+                }
+                restartButton.removeAttribute("hidden");
             }
             else {
-                message.textContent = `${player2.name}'s turn to make a move.`;
+                if (playerTurn === 1) {
+                    message.textContent = `${player1.name}'s turn to make a move.`;
+                }
+                else {
+                    message.textContent = `${player2.name}'s turn to make a move.`;
+                }
             }
         }
     }
