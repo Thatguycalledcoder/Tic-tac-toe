@@ -163,3 +163,17 @@ label {
 .hidden {
     display: hidden;
 }
+
+@media screen and (max-width: 800px) {
+    #X, #O, #X2, #O2 {
+        align-items: center;
+        margin: 0;
+        min-width: 40px;
+    }
+    section:first-of-type {
+        width: 30vw;
+    }
+    #game-board {
+        width: 75%;
+    }
+}
