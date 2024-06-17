@@ -177,3 +177,26 @@ label {
         width: 75%;
     }
 }
+
+@media screen and (max-width: 450px) {
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    main {
+        display: block;
+        margin-inline: 1rem;
+    }
+    section:first-of-type {
+        width: 90vw;
+        height: 600px;
+    }
+    section:nth-of-type(2) {
+        width: 90vw;
+        /* height: 500px; */
+    }
+    #game-board {
+        margin-left: 0;
+        width: 80%;
+    }
+}
